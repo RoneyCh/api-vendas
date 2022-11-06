@@ -5,6 +5,7 @@ import cors from 'cors';
 import routes from './routes';
 import AppError from '@shared/errors/AppError';
 import '@shared/typeorm';
+import { errors } from 'celebrate';
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(express.json());
 
 // Routes
 app.use(routes);
+
+app.use(errors());
 
 // middleware de tratamento de erros
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
