@@ -11,3 +11,5 @@ public async execute(): Promise<User[]> {
     return findUsers;
 }
 }
+
+export default ListUserService;
