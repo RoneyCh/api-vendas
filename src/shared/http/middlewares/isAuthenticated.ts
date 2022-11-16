@@ -3,6 +3,15 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import authConfig from '@config/auth';
 
+interface ITokenPayload {
+  id: string;
+  email: string;
+  name: string;
+  iat: number;
+  exp: number;
+  sub: string;
+}
+
 export default function isAuthenticated(request: Request, response: Response, next: NextFunction): void {
   const authHeader = request.headers.authorization;
 
@@ -15,6 +24,12 @@ export default function isAuthenticated(request: Request, response: Response, ne
   try {
     // Verify the token
     const decodeToken = verify(token, authConfig.jwt.secret as string);
+
+    const { sub } = decodeToken as ITokenPayload;
+
+    request.user = {
+      id: sub,
+    };
 
     return next();
   }
